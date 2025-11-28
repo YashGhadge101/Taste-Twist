@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Orders | Taste & Twist</title>
+
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+
+    <style>
+        .order-card {
+            background: var(--card-orange);
+            border: 1px solid var(--card-orange-border);
+            border-radius: 26px;
+            box-shadow: var(--shadow-medium);
+            margin-top: 25px;
+            overflow: hidden;
+        }
+        table { width: 100%; border-collapse: collapse; }
+        thead { background: rgba(255,255,255,0.12); }
+        th, td {
+            padding: 16px;
+            color: var(--black);
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+        .btn-outline {
+            padding: 6px 14px;
+            border-radius: 12px;
+            border: 2px solid var(--black);
+            text-decoration: none;
+            color: var(--black);
+            transition: 0.2s ease;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+    <a th:href="@{/dashboard}" class="nav-item">🏠 Dashboard</a>
+    <a th:href="@{/restaurants}" class="nav-item">🍽 Restaurants</a>
+    <a th:href="@{/menus}" class="nav-item">📋 Menus</a>
+    <a th:href="@{/orders}" class="nav-item active">🛒 Orders</a>
+    <a th:href="@{/logout}" class="nav-item">🚪 Logout</a>
+</div>
+
+<div class="main">
+
+    <div class="header">
+        <div class="brand">
+            <div class="logo">T</div>
+            <div>
+                <div class="brand-title">Taste & Twist</div>
+                <div class="brand-sub">Admin Dashboard</div>
+            </div>
+        </div>
+    </div>
+
+    <h1 class="page-title">Orders</h1>
+
+    <div class="order-card">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Created At</th>
+                <th style="text-align:center;">Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="o : ${orders}">
+                <td th:text="${o.id}"></td>
+                <td th:text="${o.customerName}"></td>
+                <td>₹ <span th:text="${o.totalAmount}"></span></td>
+                <td th:text="${o.status}"></td>
+                <td th:text="${o.createdAt}"></td>
+
+                <td style="text-align:center;">
+                    <a th:href="@{'/orders/view/' + ${o.id}}" class="btn-outline">View</a>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

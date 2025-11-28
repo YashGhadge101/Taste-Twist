@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout | Taste & Twist</title>
+
+    <link rel="stylesheet" th:href="@{/css/theme.css}" />
+
+    <style>
+
+        /* PAGE LAYOUT */
+        .checkout-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        /* SUMMARY CARD */
+        .summary-card {
+            flex: 1;
+            min-width: 320px;
+            padding: 28px;
+            border-radius: 26px;
+            background: var(--card-orange);
+            border: 1px solid var(--card-orange-border);
+            box-shadow: var(--shadow-medium);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .summary-card::before,
+        .summary-card::after {
+            content: "";
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            filter: blur(30px);
+        }
+
+        .summary-card::before {
+            top: -45px;
+            right: -45px;
+            background: rgba(255,162,70,0.32);
+        }
+
+        .summary-card::after {
+            bottom: -45px;
+            left: -45px;
+            background: rgba(255,162,70,0.26);
+        }
+
+        /* FORM CARD */
+        .form-card {
+            flex: 1;
+            min-width: 350px;
+            padding: 28px;
+            border-radius: 26px;
+            background: var(--card-orange);
+            border: 1px solid var(--card-orange-border);
+            box-shadow: var(--shadow-medium);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .form-card::before,
+        .form-card::after {
+            content: "";
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            filter: blur(30px);
+        }
+
+        .form-card::before {
+            top: -45px;
+            right: -45px;
+            background: rgba(255,162,70,0.32);
+        }
+
+        .form-card::after {
+            bottom: -45px;
+            left: -45px;
+            background: rgba(255,162,70,0.26);
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px 0;
+            color: var(--black);
+        }
+
+        th {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        /* INPUT FIELDS */
+        .input-field {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(0,0,0,0.2);
+            background: white;
+            font-size: 15px;
+            color: var(--black);
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        .input-field:focus {
+            border-color: #ff8400;
+            box-shadow: 0 0 8px rgba(255,132,0,0.4);
+        }
+
+        /* BUTTON */
+        .btn-pay {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(90deg,#ff9b3d,#ff6a00);
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            transition: 0.2s ease;
+        }
+
+        .btn-pay:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255,100,0,0.4);
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <a th:href="@{/dashboard}" class="nav-item">🏠 Dashboard</a>
+    <a th:href="@{/restaurants}" class="nav-item">🍽 Restaurants</a>
+    <a th:href="@{/menus}" class="nav-item">📋 Menus</a>
+    <a th:href="@{/orders}" class="nav-item">🛒 Orders</a>
+    <a th:href="@{/logout}" class="nav-item">🚪 Logout</a>
+</div>
+
+
+<div class="main">
+
+    <div class="header">
+        <div class="brand">
+            <div class="logo">T</div>
+            <div>
+                <div class="brand-title">Taste & Twist</div>
+                <div class="brand-sub">Admin Dashboard</div>
+            </div>
+        </div>
+    </div>
+
+    <h1 class="page-title">Checkout</h1>
+
+
+    <!-- MAIN CONTAINER -->
+    <div class="checkout-container">
+
+        <!-- ORDER SUMMARY -->
+        <div class="summary-card shimmer tilt-3d shadow-3d">
+            <h2 style="margin-bottom: 12px;">Order Summary</h2>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Subtotal</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="i : ${cart.items}">
+                    <td th:text="${i.name}"></td>
+                    <td th:text="${i.quantity}"></td>
+                    <td th:text="${i.subTotal}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <h2 style="margin-top: 20px; text-align:right;">
+                Total: ₹ <span th:text="${cart.total}"></span>
+            </h2>
+        </div>
+
+
+        <!-- CUSTOMER FORM -->
+        <div class="form-card shimmer tilt-3d shadow-3d">
+            <h2>Customer Details</h2>
+
+            <form th:action="@{/create-checkout-session}" method="post">
+
+                <label>Name</label>
+                <input type="text" name="name" class="input-field" placeholder="Full Name" required />
+
+                <label>Phone</label>
+                <input type="text" name="phone" class="input-field" placeholder="Phone Number" required />
+
+                <label>Address</label>
+                <textarea name="address" class="input-field" rows="3"
+                          placeholder="Delivery Address" required></textarea>
+
+                <button type="submit" class="btn-pay">
+                    Proceed to Payment →
+                </button>
+
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

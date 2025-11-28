@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Orders | Taste & Twist</title>
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+
+    <style>
+
+        /* Premium 3D Table Card */
+        .order-list-card {
+            background: var(--card-orange);
+            border: 1px solid var(--card-orange-border);
+            border-radius: 26px;
+            box-shadow: var(--shadow-medium);
+            padding: 0;
+            margin-top: 25px;
+            overflow: hidden;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        /* Glow corners */
+        .order-list-card::before,
+        .order-list-card::after {
+            content: "";
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            filter: blur(30px);
+        }
+
+        .order-list-card::before {
+            top: -45px;
+            right: -45px;
+            background: rgba(255,162,70,0.32);
+        }
+
+        .order-list-card::after {
+            bottom: -45px;
+            left: -45px;
+            background: rgba(255,162,70,0.26);
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: transparent;
+        }
+
+        thead {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(6px);
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--black);
+            font-size: 16px;
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+        }
+
+        td {
+            padding: 14px 18px;
+            font-size: 15px;
+            color: var(--black);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        /* Row Hover */
+        tbody tr:hover {
+            background: rgba(255,165,90,0.18);
+            transition: 0.25s ease;
+        }
+
+        .status-pill {
+            padding: 6px 14px;
+            border-radius: 18px;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        .status-PENDING { background: #fff1c2; color: #8a6d00; }
+        .status-CONFIRMED { background: #caffe0; color: #007f37; }
+        .status-CANCELLED { background: #ffd2d2; color: #9b0000; }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <a th:href="@{/dashboard}" class="nav-item">🏠 Dashboard</a>
+        <a th:href="@{/restaurants}" class="nav-item">🍽 Restaurants</a>
+        <a th:href="@{/menus}" class="nav-item">📋 Menus</a>
+        <a th:href="@{/orders}" class="nav-item active">🛒 Orders</a>
+        <a th:href="@{/logout}" class="nav-item">🚪 Logout</a>
+    </div>
+
+    <!-- MAIN AREA -->
+    <div class="main">
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="brand">
+                <div class="logo">T</div>
+                <div>
+                    <div class="brand-title">Taste & Twist</div>
+                    <div class="brand-sub">Admin Dashboard</div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a class="btn-ghost">Profile</a>
+                <a th:href="@{/logout}" class="btn-ghost">Logout</a>
+            </div>
+        </div>
+
+        <!-- TITLE -->
+        <h1 class="page-title">Orders</h1>
+        <p style="color: var(--muted); margin-top: 6px;">All customer orders</p>
+
+        <!-- 3D TABLE CARD -->
+        <div class="order-list-card shimmer tilt-3d shadow-3d">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Customer</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th style="text-align:center;">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="o : ${orders}">
+
+                        <td th:text="${o.id}"></td>
+
+                        <td th:text="${o.customerName}"></td>
+
+                        <td>
+                            <span class="status-pill"
+                                  th:classappend="'status-' + ${o.status}"
+                                  th:text="${o.status}">
+                            </span>
+                        </td>
+
+                        <td th:text="${o.createdAt}"></td>
+
+                        <td style="text-align:center;">
+                            <a th:href="@{'/orders/view/' + ${o.id}}" class="btn-outline">
+                                View
+                            </a>
+                        </td>
+
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

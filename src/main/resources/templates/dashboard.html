@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | Taste & Twist</title>
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+
+    <style>
+
+        /* HEADER BRAND AREA */
+        .dashboard-header-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-orange);
+            padding: 18px 28px;
+            border-radius: 26px;
+            margin-top: 20px;
+            border: 1px solid var(--card-orange-border);
+            box-shadow: var(--shadow-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-header-card::before,
+        .dashboard-header-card::after {
+            content: "";
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            filter: blur(30px);
+        }
+
+        .dashboard-header-card::before {
+            top: -45px;
+            right: -45px;
+            background: rgba(255,162,70,0.32);
+        }
+
+        .dashboard-header-card::after {
+            bottom: -45px;
+            left: -45px;
+            background: rgba(255,162,70,0.26);
+        }
+
+        .brand-title {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--black);
+        }
+
+        .brand-sub {
+            font-size: 14px;
+            margin-top: 2px;
+            color: var(--muted);
+        }
+
+        /* METRIC CARDS */
+        .card-row {
+            margin-top: 30px;
+            display: flex;
+            gap: 22px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 260px;
+            background: var(--card-orange);
+            border: 1px solid var(--card-orange-border);
+            padding: 24px;
+            border-radius: 24px;
+            box-shadow: var(--shadow-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before,
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            filter: blur(28px);
+        }
+
+        .stat-card::before {
+            top: -35px;
+            right: -35px;
+            background: rgba(255,162,70,0.32);
+        }
+
+        .stat-card::after {
+            bottom: -35px;
+            left: -35px;
+            background: rgba(255,162,70,0.26);
+        }
+
+        .stat-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--black);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            margin-top: 10px;
+            color: var(--black);
+        }
+
+        /* QUICK ACTION CARDS */
+        .quick-actions-card {
+            margin-top: 35px;
+            background: var(--card-orange);
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid var(--card-orange-border);
+            box-shadow: var(--shadow-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quick-actions-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--black);
+        }
+
+        .actions-btn-row {
+            margin-top: 15px;
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            background: linear-gradient(90deg,#ff9b3d,#ff6a00);
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 6px 15px rgba(255,132,0,0.4);
+            transition: 0.25s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 18px rgba(255,100,0,0.5);
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <a th:href="@{/dashboard}" class="nav-item active">🏠 Dashboard</a>
+    <a th:href="@{/restaurants}" class="nav-item">🍽 Restaurants</a>
+    <a th:href="@{/menus}" class="nav-item">📋 Menus</a>
+    <a th:href="@{/orders}" class="nav-item">🛒 Orders</a>
+    <a th:href="@{/logout}" class="nav-item">🚪 Logout</a>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <!-- HEADER CARD -->
+    <div class="dashboard-header-card">
+        <div>
+            <div class="brand-title">Taste & Twist Dashboard</div>
+            <div class="brand-sub">Manage restaurants, menus, and orders easily</div>
+        </div>
+
+        <div style="text-align:right;">
+            <a class="btn-ghost">Profile</a>
+            <a th:href="@{/logout}" class="btn-ghost">Logout</a>
+        </div>
+    </div>
+
+    <!-- METRICS ROW -->
+    <div class="card-row">
+
+        <div class="stat-card">
+            <div class="stat-title">Total Restaurants</div>
+            <div class="stat-value" th:text="${totalRestaurants}">0</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Total Menus</div>
+            <div class="stat-value" th:text="${totalMenus}">0</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Total Orders</div>
+            <div class="stat-value" th:text="${totalOrders}">0</div>
+        </div>
+
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="quick-actions-card">
+        <div class="quick-actions-title">Quick Actions</div>
+
+        <div class="actions-btn-row">
+            <a th:href="@{/restaurants/add}" class="action-btn">Add Restaurant</a>
+            <a th:href="@{/menus/add}" class="action-btn">Add Menu</a>
+            <a th:href="@{/orders}" class="action-btn">View Orders</a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+
+</html>

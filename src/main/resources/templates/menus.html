@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Menus | Taste & Twist</title>
+
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+
+    <style>
+
+        /* Table card (3D + glow + premium orange) */
+        .menu-card {
+            background: var(--card-orange);
+            border: 1px solid var(--card-orange-border);
+            border-radius: 26px;
+            box-shadow: var(--shadow-medium);
+            padding: 0;
+            margin-top: 25px;
+            overflow: hidden;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        /* Glow corners */
+        .menu-card::before,
+        .menu-card::after {
+            content: "";
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            filter: blur(30px);
+        }
+
+        .menu-card::before {
+            top: -45px;
+            right: -45px;
+            background: rgba(255,162,70,0.3);
+        }
+
+        .menu-card::after {
+            bottom: -45px;
+            left: -45px;
+            background: rgba(255,162,70,0.25);
+        }
+
+        /* Premium Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: transparent;
+        }
+
+        thead {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(6px);
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--black);
+            font-size: 16px;
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+        }
+
+        td {
+            padding: 14px 18px;
+            color: var(--black);
+            font-size: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        tbody tr:hover {
+            background: rgba(255,165,90,0.18);
+            transition: 0.25s ease;
+        }
+
+        .page-sub {
+            color: var(--muted);
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <a th:href="@{/dashboard}" class="nav-item">🏠 Dashboard</a>
+        <a th:href="@{/restaurants}" class="nav-item">🍽 Restaurants</a>
+        <a th:href="@{/menus}" class="nav-item active">📋 Menus</a>
+        <a th:href="@{/orders}" class="nav-item">🛒 Orders</a>
+        <a th:href="@{/logout}" class="nav-item">🚪 Logout</a>
+    </div>
+
+    <div class="main">
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="brand">
+                <div class="logo">T</div>
+                <div>
+                    <div class="brand-title">Taste & Twist</div>
+                    <div class="brand-sub">Admin Dashboard</div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a class="btn-ghost">Profile</a>
+                <a th:href="@{/logout}" class="btn-ghost">Logout</a>
+            </div>
+        </div>
+
+        <!-- PAGE TITLE -->
+        <h1 class="page-title">Menus</h1>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+            <p class="page-sub">All menu items in the system</p>
+            <a th:href="@{/menus/add}" class="btn">Add Menu</a>
+        </div>
+
+        <!-- PREMIUM 3D TABLE CARD -->
+        <div class="menu-card shimmer tilt-3d shadow-3d">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Menu Name</th>
+                        <th>Price</th>
+                        <th>Restaurant</th>
+                        <th style="text-align:center;">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="m : ${menus}">
+                        <td th:text="${m.id}"></td>
+                        <td th:text="${m.name}"></td>
+                        <td th:text="${m.price}"></td>
+                        <td th:text="${m.restaurant != null ? m.restaurant.name : '—'}"></td>
+
+                        <td style="text-align:center;">
+    <div style="display:flex; justify-content:center; gap:10px;">
+
+        <a th:href="@{'/menus/edit/' + ${m.id}}" class="btn-outline">Edit</a>
+
+        <!-- FIXED: Add to Cart Button -->
+        <form th:action="@{/cart/add/{id}(id=${m.id})}" method="post" style="display:inline-block;">
+            <input type="hidden" name="quantity" value="1" />
+            <button type="submit" class="btn">Add to Cart</button>
+        </form>
+
+    </div>
+</td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

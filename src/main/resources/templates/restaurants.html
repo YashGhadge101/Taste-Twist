@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurants | Taste & Twist</title>
+
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+
+    <style>
+
+        /* 3D Orange Restaurant Table Card */
+        .restaurant-table-card {
+            background: var(--card-orange);
+            border: 1px solid var(--card-orange-border);
+            border-radius: 26px;
+            padding: 0;
+            margin-top: 25px;
+            overflow: hidden;
+            position: relative;
+            transform-style: preserve-3d;
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Glow corners */
+        .restaurant-table-card::before,
+        .restaurant-table-card::after {
+            content: "";
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            filter: blur(30px);
+        }
+
+        .restaurant-table-card::before {
+            top: -45px;
+            right: -45px;
+            background: rgba(255,162,70,0.32);
+        }
+
+        .restaurant-table-card::after {
+            bottom: -45px;
+            left: -45px;
+            background: rgba(255,162,70,0.26);
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: transparent;
+        }
+
+        thead {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(6px);
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--black);
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+        }
+
+        td {
+            padding: 14px 18px;
+            font-size: 15px;
+            color: var(--black);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        tbody tr:hover {
+            background: rgba(255,165,90,0.18);
+            transition: 0.25s ease;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <a th:href="@{/dashboard}" class="nav-item">🏠 Dashboard</a>
+        <a th:href="@{/restaurants}" class="nav-item active">🍽 Restaurants</a>
+        <a th:href="@{/menus}" class="nav-item">📋 Menus</a>
+        <a th:href="@{/orders}" class="nav-item">🛒 Orders</a>
+        <a th:href="@{/logout}" class="nav-item">🚪 Logout</a>
+    </div>
+
+    <!-- MAIN AREA -->
+    <div class="main">
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="brand">
+                <div class="logo">T</div>
+                <div>
+                    <div class="brand-title">Taste & Twist</div>
+                    <div class="brand-sub">Admin Dashboard</div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a class="btn-ghost">Profile</a>
+                <a th:href="@{/logout}" class="btn-ghost">Logout</a>
+            </div>
+        </div>
+
+        <!-- PAGE TITLE -->
+        <h1 class="page-title">Restaurants</h1>
+
+        <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
+            <p style="color: var(--muted);">List of all restaurants</p>
+            <a th:href="@{/restaurants/add}" class="btn-primary">+ Add Restaurant</a>
+        </div>
+
+        <!-- PREMIUM 3D TABLE CARD -->
+        <div class="restaurant-table-card shimmer tilt-3d shadow-3d">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th style="text-align:center;">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="r : ${restaurants}">
+
+                        <td th:text="${r.id}"></td>
+
+                        <td th:text="${r.name}"></td>
+
+                        <td th:text="${r.address}"></td>
+
+                        <td style="text-align:center;">
+                            <div class="action-buttons">
+                                <a th:href="@{'/restaurants/view/' + ${r.id}}" class="btn-outline">View</a>
+                                <a th:href="@{'/restaurants/edit/' + ${r.id}}" class="btn-ghost">Edit</a>
+                            </div>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

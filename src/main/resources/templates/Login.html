@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Taste & Twist</title>
+
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+
+    <style>
+        .auth-wrapper {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            background: var(--offwhite);
+            animation: fadeInPage 0.6s ease;
+        }
+
+        /* ORANGE PREMIUM LOGIN CARD WITH 3D ANIMATION */
+        .auth-card {
+            width: 100%;
+            max-width: 430px;
+            background: var(--card-orange);
+            padding: 50px 38px;
+            border-radius: 22px;
+            box-shadow: var(--shadow-medium);
+            border: 1px solid var(--card-orange-border);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+
+            /* Enable 3D */
+            transform-style: preserve-3d;
+        }
+
+        /* Glow corners */
+        .auth-card::before,
+        .auth-card::after {
+            content: "";
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            filter: blur(30px);
+        }
+
+        .auth-card::before {
+            top: -40px;
+            right: -40px;
+            background: rgba(255,162,70,0.28);
+        }
+
+        .auth-card::after {
+            bottom: -40px;
+            left: -40px;
+            background: rgba(255,162,70,0.24);
+        }
+
+        .auth-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--black);
+            margin-bottom: 6px;
+        }
+
+        .auth-title::after {
+            content: "";
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            display: block;
+            margin: 12px auto 0;
+            border-radius: 10px;
+        }
+
+        .auth-sub {
+            font-size: 15px;
+            color: var(--muted);
+            margin-bottom: 26px;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .auth-label {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--black);
+        }
+
+        .auth-footer {
+            margin-top: 24px;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .auth-footer a {
+            color: #ff8400;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="auth-wrapper">
+
+    <!-- APPLYING 3D ANIMATIONS HERE -->
+    <div class="auth-card shimmer tilt-3d shadow-3d">
+
+        <h1 class="auth-title">Welcome Back</h1>
+        <p class="auth-sub">Login to your dashboard</p>
+
+        <form th:action="@{/login-process}" method="post" class="auth-form">
+
+            <div style="text-align:left;">
+                <label class="auth-label">Email</label>
+                <input name="username" class="input" type="text" required>
+            </div>
+
+            <div style="text-align:left;">
+                <label class="auth-label">Password</label>
+                <input name="password" class="input" type="password" required>
+            </div>
+
+            <button class="btn" type="submit" style="width:100%;">
+                Login
+            </button>
+
+        </form>
+
+        <div class="auth-footer">
+            Don't have an account?
+            <a th:href="@{/signup}">Create one</a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

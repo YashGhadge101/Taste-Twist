@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Signup | Taste & Twist</title>
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+
+    <style>
+
+        .auth-wrapper {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            background: var(--offwhite);
+            animation: fadeInPage 0.6s ease;
+        }
+
+        /* PREMIUM ORANGE SIGNUP CARD + 3D */
+        .auth-card {
+            width: 100%;
+            max-width: 440px;
+            background: var(--card-orange);
+            padding: 50px 38px;
+            border-radius: 22px;
+            box-shadow: var(--shadow-medium);
+            border: 1px solid var(--card-orange-border);
+            text-align: center;
+
+            position: relative;
+            overflow: hidden;
+
+            /* Enable 3D */
+            transform-style: preserve-3d;
+        }
+
+        /* Glow corners */
+        .auth-card::before,
+        .auth-card::after {
+            content: "";
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            filter: blur(30px);
+        }
+
+        .auth-card::before {
+            top: -40px;
+            right: -40px;
+            background: rgba(255,162,70,0.28);
+        }
+
+        .auth-card::after {
+            bottom: -40px;
+            left: -40px;
+            background: rgba(255,162,70,0.24);
+        }
+
+        /* Titles */
+        .auth-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--black);
+            margin-bottom: 8px;
+        }
+
+        .auth-title::after {
+            content: "";
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            display: block;
+            margin: 12px auto 0;
+            border-radius: 10px;
+        }
+
+        .auth-sub {
+            font-size: 15px;
+            color: var(--muted);
+            margin-bottom: 26px;
+        }
+
+        /* Form */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .auth-label {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--black);
+        }
+
+        .error-message {
+            margin-top: 10px;
+            color: #ff4b4b;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        .auth-footer {
+            margin-top: 24px;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .auth-footer a {
+            color: #ff8400;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="auth-wrapper">
+
+    <!-- Apply 3D animation classes -->
+    <div class="auth-card shimmer tilt-3d shadow-3d">
+
+        <h1 class="auth-title">Create Account</h1>
+        <p class="auth-sub">Join Taste & Twist</p>
+
+        <form th:action="@{/signup-process}" method="post" class="auth-form">
+
+            <div style="text-align:left;">
+                <label class="auth-label">Name</label>
+                <input type="text" class="input" name="name" required>
+            </div>
+
+            <div style="text-align:left;">
+                <label class="auth-label">Email</label>
+                <input type="email" class="input" name="email" required>
+            </div>
+
+            <div style="text-align:left;">
+                <label class="auth-label">Password</label>
+                <input type="password" class="input" name="password" required>
+            </div>
+
+            <button type="submit" class="btn" style="width:100%;">Signup</button>
+
+            <p th:if="${error}" class="error-message" th:text="${error}"></p>
+
+        </form>
+
+        <div class="auth-footer">
+            Already have an account?
+            <a th:href="@{/login}">Login</a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Order Details | Taste & Twist</title>
+
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+
+    <style>
+        .order-detail-card {
+            max-width: 750px;
+            margin: 25px auto;
+            padding: 30px;
+            border-radius: 26px;
+            background: var(--card-orange);
+            border: 1px solid var(--card-orange-border);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            margin-top: 25px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .btn-outline {
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: 2px solid var(--black);
+            text-decoration: none;
+            color: var(--black);
+            display: inline-block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <a th:href="@{/dashboard}" class="nav-item">🏠 Dashboard</a>
+    <a th:href="@{/restaurants}" class="nav-item">🍽 Restaurants</a>
+    <a th:href="@{/menus}" class="nav-item">📋 Menus</a>
+    <a th:href="@{/orders}" class="nav-item active">🛒 Orders</a>
+    <a th:href="@{/logout}" class="nav-item">🚪 Logout</a>
+</div>
+
+<div class="main">
+
+    <div class="header">
+        <div class="brand">
+            <div class="logo">T</div>
+            <div>
+                <div class="brand-title">Taste & Twist</div>
+                <div class="brand-sub">Admin Dashboard</div>
+            </div>
+        </div>
+    </div>
+
+    <h1 class="page-title">Order Details</h1>
+
+    <div class="order-detail-card">
+
+        <div class="detail-row">
+            <strong>Order ID:</strong>
+            <span th:text="${order.id}"></span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Customer:</strong>
+            <span th:text="${order.customerName}"></span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Phone:</strong>
+            <span th:text="${order.phone}"></span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Address:</strong>
+            <span th:text="${order.address}"></span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Status:</strong>
+            <span th:text="${order.status}"></span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Created At:</strong>
+            <span th:text="${order.createdAt}"></span>
+        </div>
+
+        <h3 style="margin-top:25px;">Order Items</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Menu</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="item : ${items}">
+                    <td th:text="${item.menuName}"></td>
+                    <td>₹ <span th:text="${item.price}"></span></td>
+                    <td th:text="${item.quantity}"></td>
+                    <td>₹ <span th:text="${item.subTotal}"></span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="detail-row">
+            <strong>Total Amount:</strong>
+            <span>₹ <span th:text="${order.totalAmount}"></span></span>
+        </div>
+
+        <a th:href="@{/orders}" class="btn-outline">← Back to Orders</a>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cart | Taste & Twist</title>
+
+    <link rel="stylesheet" th:href="@{/css/theme.css}" />
+
+    <style>
+
+        /* MAIN CARD */
+        .cart-card {
+            background: var(--card-orange);
+            border: 1px solid var(--card-orange-border);
+            border-radius: 26px;
+            padding: 28px;
+            margin-top: 25px;
+            box-shadow: var(--shadow-medium);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .cart-card::before,
+        .cart-card::after {
+            content: "";
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            filter: blur(30px);
+        }
+
+        .cart-card::before {
+            top: -45px;
+            right: -45px;
+            background: rgba(255,162,70,0.32);
+        }
+
+        .cart-card::after {
+            bottom: -45px;
+            left: -45px;
+            background: rgba(255,162,70,0.26);
+        }
+
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 22px;
+        }
+
+        thead {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(6px);
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--black);
+        }
+
+        td {
+            padding: 14px 12px;
+            font-size: 15px;
+            color: var(--black);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        tbody tr:hover {
+            background: rgba(255,165,90,0.18);
+            transition: 0.25s ease;
+        }
+
+
+        /* QUANTITY BUTTONS */
+        .qty-box {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .qty-btn {
+            padding: 3px 10px;
+            border-radius: 8px;
+            border: none;
+            background: var(--black);
+            color: white;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .qty-field {
+            width: 45px;
+            text-align: center;
+            padding: 6px;
+            border-radius: 8px;
+            border: 1px solid rgba(0,0,0,0.2);
+        }
+
+
+        /* ACTION BUTTONS BELOW */
+        .cart-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 28px;
+        }
+
+        .btn-big {
+            padding: 12px 28px;
+            font-size: 16px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            color: white;
+            background: linear-gradient(90deg,#ff9b3d,#ff6a00);
+            font-weight: 600;
+        }
+
+        .btn-outline-big {
+            padding: 12px 28px;
+            font-size: 16px;
+            border-radius: 14px;
+            border: 2px solid var(--black);
+            cursor: pointer;
+            color: var(--black);
+            font-weight: 600;
+            background: transparent;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            font-size: 22px;
+            color: var(--muted);
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="sidebar">
+    <a th:href="@{/dashboard}" class="nav-item">🏠 Dashboard</a>
+    <a th:href="@{/restaurants}" class="nav-item">🍽 Restaurants</a>
+    <a th:href="@{/menus}" class="nav-item">📋 Menus</a>
+    <a th:href="@{/orders}" class="nav-item">🛒 Orders</a>
+    <a th:href="@{/logout}" class="nav-item">🚪 Logout</a>
+</div>
+
+
+<div class="main">
+
+    <div class="header">
+        <div class="brand">
+            <div class="logo">T</div>
+            <div>
+                <div class="brand-title">Taste & Twist</div>
+                <div class="brand-sub">Admin Dashboard</div>
+            </div>
+        </div>
+    </div>
+
+
+    <h1 class="page-title">Your Cart</h1>
+
+    <!-- CART CARD -->
+    <div class="cart-card shimmer tilt-3d shadow-3d">
+
+        <!-- If cart is empty -->
+        <div th:if="${cart.items.size()} == 0" class="empty">
+            Your cart is empty 😔  
+            <br><br>
+            <a th:href="@{/menus}" class="btn-outline-big">Browse Menus</a>
+        </div>
+
+        <!-- If cart has items -->
+        <div th:if="${cart.items.size()} > 0">
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                    <th style="text-align:center;">Remove</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="i : ${cart.items}">
+                    <td th:text="${i.name}"></td>
+
+                    <td>
+                        <div class="qty-box">
+                            <!-- minus -->
+                            <form th:action="@{/cart/update}" method="post" style="display:inline;">
+                                <input type="hidden" name="menuId" th:value="${i.menuId}" />
+                                <input type="hidden" name="quantity" th:value="${i.quantity - 1}" />
+                                <button class="qty-btn" type="submit">-</button>
+                            </form>
+
+                            <!-- qty display -->
+                            <input type="text" class="qty-field" th:value="${i.quantity}" readonly />
+
+                            <!-- plus -->
+                            <form th:action="@{/cart/update}" method="post" style="display:inline;">
+                                <input type="hidden" name="menuId" th:value="${i.menuId}" />
+                                <input type="hidden" name="quantity" th:value="${i.quantity + 1}" />
+                                <button class="qty-btn" type="submit">+</button>
+                            </form>
+                        </div>
+                    </td>
+
+                    <td th:text="${i.price}"></td>
+
+                    <td th:text="${i.subTotal}"></td>
+
+                    <td style="text-align:center;">
+                        <form th:action="@{/cart/remove/{id}(id=${i.menuId})}" method="post">
+                            <button type="submit" class="qty-btn" style="background:#b30000;">X</button>
+                        </form>
+                    </td>
+
+                </tr>
+
+                </tbody>
+            </table>
+
+            <!-- TOTAL -->
+            <h2 style="text-align:right; margin-top:10px;">
+                Total: ₹ <span th:text="${cart.total}"></span>
+            </h2>
+
+            <!-- ACTION BUTTONS -->
+            <div class="cart-actions">
+                <a th:href="@{/menus}" class="btn-outline-big">← Continue Shopping</a>
+                <a th:href="@{/checkout}" class="btn-big">Proceed to Checkout →</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

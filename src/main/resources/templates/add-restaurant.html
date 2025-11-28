@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Restaurant | Taste & Twist</title>
+
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+
+    <style>
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--black);
+        }
+
+        /* Premium 3D card */
+        .restaurant-card {
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 26px;
+            background: var(--card-orange);
+            border: 1px solid var(--card-orange-border);
+            box-shadow: var(--shadow-medium);
+            margin-top: 25px;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        /* Glow effects */
+        .restaurant-card::before,
+        .restaurant-card::after {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            filter: blur(28px);
+        }
+
+        .restaurant-card::before {
+            top: -40px;
+            right: -40px;
+            background: rgba(255,162,70,0.28);
+        }
+
+        .restaurant-card::after {
+            bottom: -40px;
+            left: -40px;
+            background: rgba(255,162,70,0.24);
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <a th:href="@{/dashboard}" class="nav-item">🏠 Dashboard</a>
+        <a th:href="@{/restaurants}" class="nav-item active">🍽 Restaurants</a>
+        <a th:href="@{/menus}" class="nav-item">📋 Menus</a>
+        <a th:href="@{/orders}" class="nav-item">🛒 Orders</a>
+        <a th:href="@{/logout}" class="nav-item">🚪 Logout</a>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="brand">
+                <div class="logo">T</div>
+                <div>
+                    <div class="brand-title">Taste & Twist</div>
+                    <div class="brand-sub">Admin Dashboard</div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a th:href="@{/profile}" class="btn-ghost">Profile</a>
+                <a th:href="@{/logout}" class="btn-ghost">Logout</a>
+            </div>
+        </div>
+
+        <!-- PAGE TITLE -->
+        <h1 class="page-title">Add New Restaurant</h1>
+
+        <!-- PREMIUM 3D CARD -->
+        <div class="restaurant-card shimmer tilt-3d shadow-3d">
+
+            <form th:action="@{/restaurants/add}" method="post" class="form">
+
+                <!-- Restaurant Name -->
+                <div class="form-group">
+                    <label>Restaurant Name <span style="color:var(--gold);">*</span></label>
+                    <input class="input" type="text" name="name" required placeholder="Enter restaurant name">
+                </div>
+
+                <!-- Address -->
+                <div class="form-group">
+                    <label>Address <span style="color:var(--gold);">*</span></label>
+                    <input class="input" type="text" name="address" required placeholder="Enter full address">
+                </div>
+
+                <button type="submit" class="btn" style="width: 100%;">Add Restaurant</button>
+
+            </form>
+
+            <div style="margin-top: 25px;">
+                <a th:href="@{/restaurants}" class="btn-outline">← Back to List</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

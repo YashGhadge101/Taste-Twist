@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant Details | Taste & Twist</title>
+
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+
+    <style>
+
+        /* 3D Details Card */
+        .details-card {
+            max-width: 650px;
+            background: var(--card-orange);
+            border: 1px solid var(--card-orange-border);
+            padding: 32px;
+            border-radius: 26px;
+            box-shadow: var(--shadow-medium);
+            margin-top: 25px;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        /* Glow lights */
+        .details-card::before,
+        .details-card::after {
+            content: "";
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            filter: blur(30px);
+        }
+
+        .details-card::before {
+            top: -45px;
+            right: -45px;
+            background: rgba(255,162,70,0.32);
+        }
+
+        .details-card::after {
+            bottom: -45px;
+            left: -45px;
+            background: rgba(255,162,70,0.26);
+        }
+
+        .detail-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--black);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .detail-title::after {
+            content: "";
+            width: 70px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            display: block;
+            margin: 12px auto 0;
+            border-radius: 10px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            font-weight: 700;
+            color: var(--black);
+        }
+
+        .value {
+            font-weight: 500;
+            color: var(--black);
+        }
+
+        .detail-actions {
+            margin-top: 28px;
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <a th:href="@{/dashboard}" class="nav-item">🏠 Dashboard</a>
+        <a th:href="@{/restaurants}" class="nav-item active">🍽 Restaurants</a>
+        <a th:href="@{/menus}" class="nav-item">📋 Menus</a>
+        <a th:href="@{/orders}" class="nav-item">🛒 Orders</a>
+        <a th:href="@{/logout}" class="nav-item">🚪 Logout</a>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="brand">
+                <div class="logo">T</div>
+                <div>
+                    <div class="brand-title">Taste & Twist</div>
+                    <div class="brand-sub">Admin Dashboard</div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a class="btn-ghost">Profile</a>
+                <a th:href="@{/logout}" class="btn-ghost">Logout</a>
+            </div>
+        </div>
+
+        <!-- TITLE -->
+        <h1 class="page-title">Restaurant Details</h1>
+
+        <!-- DETAILS CARD -->
+        <div class="details-card shimmer tilt-3d shadow-3d">
+
+            <div class="detail-title"
+                 th:text="${restaurant.name}">
+            </div>
+
+            <div class="detail-row">
+                <span class="label">ID:</span>
+                <span class="value" th:text="${restaurant.id}"></span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Name:</span>
+                <span class="value" th:text="${restaurant.name}"></span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Address:</span>
+                <span class="value" th:text="${restaurant.address}"></span>
+            </div>
+
+            <div class="detail-actions">
+                <a th:href="@{'/restaurants/edit/' + ${restaurant.id}}" class="btn">
+                    Edit
+                </a>
+
+                <a th:href="@{/restaurants}" class="btn-outline">
+                    Back to List
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
